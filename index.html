@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Scores</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+<body>
+    <h1>BeachCup 2024</h1>
+    <table id="scoreTable">
+        <thead>
+            <tr>
+                <th>Team</th>
+                <th>Beer Count</th>
+            </tr>
+        </thead>
+        <tbody id="team-data" hx-trigger="load, every 5s" hx-get="/update-table">
+            <!-- Table body will be populated by HTMX -->
+        </tbody>
+    </table>
+    <h2>Recent Points</h2>
+    <div id="recentPoints"></div>
+</body>
+</html>

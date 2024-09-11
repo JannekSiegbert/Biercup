@@ -1,0 +1,15 @@
+{% for person in people %}
+<tr>
+    <td>{{ person.name }}</td>
+    <td>{{ person.team_name }}</td>
+    <td>
+        <select hx-post="/change-team" hx-trigger="change" name="team_id" hx-vals='{"person_id": "{{ person.id }}"}'>
+            {% for team in all_teams %}
+                <option value="{{ team.id }}" {% if team.id == person.team_id %}selected{% endif %}>
+                    {{ team.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </td>
+</tr>
+{% endfor %}

@@ -1,0 +1,62 @@
+:root {
+  --bg: #1a1b26;
+  --text: #a9b1d6;
+  --heading: #7aa2f7;
+  --table: #24283b;
+  --highlight: #3b4261;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+h1,
+h2 {
+  color: var(--heading);
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+th,
+td {
+  padding: 15px;
+  background: var(--table);
+  border-radius: 12px;
+}
+
+th {
+  background: var(--highlight);
+  color: var(--heading);
+}
+
+.highlight {
+  background: var(--highlight);
+  box-shadow: 0 0 15px var(--heading);
+}
+
+#recentPoints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 15px;
+  background: var(--table);
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
+.point {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  font-weight: 500;
+}
