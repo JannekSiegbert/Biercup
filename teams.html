@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team Scores</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+
+<body>
+
+  <h1>BeachCup 2024</h1>
+  <div class="container">
+    <div class="main-content">
+      <table id="scoreTable">
+        <thead>
+          <tr>
+            <th>Team</th>
+            <th>Total</th>
+            <th>Durchschnitt</th>
+          </tr>
+        </thead>
+        <tbody id="team-data" hx-trigger="load, every 5s" hx-get="/team-table" />
+      </table>
+    </div>
+    <div class="recent-entries">
+      <h2>Neuste Punkte</h2>
+      <div id="recentPoints" hx-trigger="load, every 1s" hx-get="/recent-entries"></div>
+    </div>
+  </div>
+  <a href="/people" class="nav-button">Teilnehmer</a>
+</body>
+
+</html>

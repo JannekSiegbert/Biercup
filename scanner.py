@@ -1,29 +1,17 @@
 import serial
 import sys
 from db import add_beer_for_person
+import serial.tools.list_ports
 
 
 def scancomports():
-    if sys.platform.startswith('win'):
-        ports = ['COM%s' % (i + 1) for i in range(256)]
-    elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-        ports = ['/dev/ttyS%s' % (i + 1) for i in range(256)]
-    elif sys.platform.startswith('darwin'):
-        ports = ['/dev/tty.usbserial-%s' % (i + 1) for i in range(256)]
-    else:
-        raise EnvironmentError('Unsupported platform')
-
     print("Scanning for COM ports...")
     foundports = []
 
-    for port in ports:
-        try:
-            ser = serial.Serial(port)
-            ser.close()
-            foundports.append(port)
-            print(f"Found port: {port}")
-        except (OSError, serial.SerialException):
-            pass
+    list_of_ports = search_for_ports()
+    for port in list_of_ports:
+        foundports.append(port.description)
+        print(f"Found port: {port.description}")
 
     return foundports
 
@@ -43,7 +31,9 @@ def read_serial(port, baud_rate):
     except:
         print(f"{port} konnte nicht geöffnet werden")
        
-
+def search_for_ports():
+    list_of_ports = list(serial.tools.list_ports.comports())
+    return list_of_ports
 
 if __name__ == "__main__":
     scancomports()

@@ -6,7 +6,7 @@ in
   pkgs.mkShell {
     packages = [
       (pkgs.python3.withPackages (python-pkgs: [
-        python-pkgs.pyserial
+        python-pkgs.serialio
         python-pkgs.requests
         python-pkgs.flask
       ]))

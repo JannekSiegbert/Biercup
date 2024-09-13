@@ -1,62 +1,67 @@
 :root {
-  --bg: #1a1b26;
-  --text: #a9b1d6;
-  --heading: #7aa2f7;
-  --table: #24283b;
-  --highlight: #3b4261;
+  --text: #fdf7e5;
+  --background: #2D4059;
+  --primary: #f8d786;
+  --secondary: #09959c;
+  --accent: #3961f3;
 }
 
 body {
   font-family: 'Inter', sans-serif;
-  max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background: var(--bg);
+  background: var(--background);
   color: var(--text);
   line-height: 1.6;
+  font-size: 34px;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.main-content {
+  flex: 0 0 60%;
+  margin-left: 5%;
+}
+
+.recent-entries {
+  flex: 0 0 20%;
+  margin: 10%;
+}
+
+.recent-entry {
+  margin-bottom: 10px;
+  padding: 5px;
+  border-color: var(--primary);
+  border-radius: 12px;
 }
 
 h1,
 h2 {
-  color: var(--heading);
+  color: var(--text);
 }
 
 table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 10px;
-}
-
-th,
-td {
-  padding: 15px;
-  background: var(--table);
   border-radius: 12px;
 }
 
 th {
-  background: var(--highlight);
-  color: var(--heading);
+  font-size: 50px;
 }
 
-.highlight {
-  background: var(--highlight);
-  box-shadow: 0 0 15px var(--heading);
-}
-
-#recentPoints {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+th,
+tr {
   padding: 15px;
-  background: var(--table);
-  border-radius: 12px;
-  margin-top: 20px;
 }
 
-.point {
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 0.9em;
-  font-weight: 500;
+tbody tr:first-child:nth-child(even) {
+  background-color: var(--primary);
 }

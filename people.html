@@ -1,15 +1,26 @@
-{% for person in people %}
-<tr>
-    <td>{{ person.name }}</td>
-    <td>{{ person.team_name }}</td>
-    <td>
-        <select hx-post="/change-team" hx-trigger="change" name="team_id" hx-vals='{"person_id": "{{ person.id }}"}'>
-            {% for team in all_teams %}
-                <option value="{{ team.id }}" {% if team.id == person.team_id %}selected{% endif %}>
-                    {{ team.name }}
-                </option>
-            {% endfor %}
-        </select>
-    </td>
-</tr>
-{% endfor %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Person Table</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+<body>
+    <h1>Teilnehmer</h1>
+    <a href="/teams" class="nav-button">Teams</a>
+    <table id="personTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Score</th>
+                <th>Team</th>
+            </tr>
+        </thead>
+        <tbody id="person-data" hx-trigger="load, every 5s" hx-get="/people-table">
+            <!-- Table body will be populated by HTMX -->
+        </tbody>
+    </table>
+</body>
+</html>
