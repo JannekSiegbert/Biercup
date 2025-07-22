@@ -15,9 +15,11 @@ def start_server(port=8000):
 
 def main():
     setup_database()
-    # = scancomports()
-    threads = [threading.Thread(target=read_serial, args=("COM6", 9600))]
-    # threads.append(threading.Thread(target=run_flask_server))
+    ports = scancomports()
+    threads = []
+    for port in ports:
+        threads.append(threading.Thread(target=read_serial, args=(port, 9600)))
+    threads.append(threading.Thread(target=run_flask_server))
     
     for thread in threads:
         thread.start()

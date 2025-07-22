@@ -10,8 +10,8 @@ def scancomports():
 
     list_of_ports = search_for_ports()
     for port in list_of_ports:
-        foundports.append(port.description)
-        print(f"Found port: {port.description}")
+        foundports.append(port.usb_description())
+        print(f"Found port: {port.usb_description()}")
 
     return foundports
 
