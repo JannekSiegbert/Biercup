@@ -1,7 +1,7 @@
 import sqlite3
 
 def setup_database():
-    conn = sqlite3.connect('../teamscores.db')
+    conn = sqlite3.connect('teamscores.db')
     cursor = conn.cursor()
 
     cursor.execute('''
@@ -28,6 +28,15 @@ def setup_database():
         FOREIGN KEY (people_id) REFERENCES people (id)
     )
     ''')
+
+    conn.commit()
+
+    cursor = conn.cursor()
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    print(cursor.fetchall())
+
+if __name__ == "__main__":
+    setup_database()
 
 def get_teams_with_scores():
     conn = sqlite3.connect('teamscores.db')
