@@ -165,3 +165,50 @@ def add_beer_for_person(person_name):
 
     finally:
         conn.close()
+
+
+def add_person_to_team(person_name, team_name):
+    conn = sqlite3.connect('teamscores.db')
+    cursor = conn.cursor()
+
+    try:
+        # Get or create the person
+        cursor.execute("SELECT id, team_id FROM people WHERE name = ?", (person_name,))
+        person = cursor.fetchone()
+        if person:
+            person_id, existing_team_id = person
+            print(f"Found existing person '{person_name}' with ID {person_id}")
+        else:
+            cursor.execute("INSERT INTO people (name, team_id) VALUES (?, NULL)", (person_name,))
+            person_id = cursor.lastrowid
+            existing_team_id = None
+            print(f"Created person '{person_name}' with ID {person_id}")
+        
+        if team_name == "":
+            return;
+        # Get or create the team
+        cursor.execute("SELECT id FROM teams WHERE name = ?", (team_name,))
+        team = cursor.fetchone()
+        if team:
+            team_id = team[0]
+            print(f"Found existing team '{team_name}' with ID {team_id}")
+        else:
+            cursor.execute("INSERT INTO teams (name) VALUES (?)", (team_name,))
+            team_id = cursor.lastrowid
+            print(f"Created team '{team_name}' with ID {team_id}")
+
+        # Update the person’s team_id if not already set or different
+        if existing_team_id != team_id:
+            cursor.execute("UPDATE people SET team_id = ? WHERE id = ?", (team_id, person_id))
+            print(f"Assigned person '{person_name}' to team '{team_name}'")
+
+        conn.commit()
+        return True
+
+    except sqlite3.Error as e:
+        print(f"An error occurred: {e}")
+        conn.rollback()
+        return False
+
+    finally:
+        conn.close()
