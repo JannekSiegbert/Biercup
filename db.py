@@ -129,7 +129,7 @@ def get_recent_beers():
 
 
 def add_beer_for_person(person_name):
-    conn = sqlite3.connect('../teamscores.db')
+    conn = sqlite3.connect('teamscores.db')
     cursor = conn.cursor()
 
     try:
@@ -139,13 +139,14 @@ def add_beer_for_person(person_name):
         if result:
             person_id = result[0]
         else:
+            print("Person will be created")
             cursor.execute("INSERT INTO people (name, team_id) VALUES (?, NULL)", (person_name,))
             person_id = cursor.lastrowid
 
         cursor.execute("INSERT INTO beers (people_id) VALUES (?)", (person_id,))
         
         conn.commit()
-        print(f"Added beer for person '{person_name}'")
+        print(f"Added beer for person '{person_name}''{person_id}'")
         return True
 
     except sqlite3.Error as e:
