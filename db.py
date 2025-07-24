@@ -124,14 +124,21 @@ def get_recent_beers():
     c = conn.cursor()
     conn.row_factory = dict_factory
     c.execute('''
-        SELECT people.name, 
-               COALESCE(teams.name, 'no team') as team_name
-        FROM beers
-        JOIN people ON beers.people_id = people.id
-        LEFT JOIN teams ON people.team_id = teams.id
-        ORDER BY beers.timestamp DESC
+        SELECT name, team_name, timestamp FROM (
+            SELECT 
+                people.name, 
+                COALESCE(teams.name, 'no team') AS team_name,
+                beers.timestamp,
+                ROW_NUMBER() OVER (PARTITION BY people.id ORDER BY beers.timestamp DESC) as rn
+            FROM beers
+            JOIN people ON beers.people_id = people.id
+            LEFT JOIN teams ON people.team_id = teams.id
+        )
+        WHERE rn = 1
+        ORDER BY timestamp DESC
         LIMIT 5
     ''')
+ 
     data = c.fetchall()
     conn.close()
     return data
@@ -143,16 +150,27 @@ def add_beer_for_person(person_name):
 
     try:
         cursor.execute("SELECT id FROM people WHERE name = ?", (person_name,))
-        result = cursor.fetchone()
+        person_result = cursor.fetchone()
 
-        if result:
-            person_id = result[0]
+        cursor.execute("SELECT id FROM teams WHERE name = ?", (person_name,))
+        teams_result = cursor.fetchone()
+
+        if person_result:
+            person_id = person_result[0]
         else:
             print("Person will be created")
-            cursor.execute("INSERT INTO people (name, team_id) VALUES (?, NULL)", (person_name,))
+            if teams_result:
+                teams_id = teams_result[0] 
+                cursor.execute("INSERT INTO people (name, team_id) VALUES (?, ?)", (person_name,teams_id))
+            else:
+                cursor.execute("INSERT INTO people (name, team_id) VALUES (?, NULL)", (person_name,))
             person_id = cursor.lastrowid
 
-        cursor.execute("INSERT INTO beers (people_id) VALUES (?)", (person_id,))
+        if teams_result:
+            for _ in range(8):
+                cursor.execute("INSERT INTO beers (people_id) VALUES (?)", (person_id,))
+        else:
+            cursor.execute("INSERT INTO beers (people_id) VALUES (?)", (person_id,))
         
         conn.commit()
         print(f"Added beer for person '{person_name}''{person_id}'")

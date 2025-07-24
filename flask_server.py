@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, request
 import sqlite3
 import os
+import logging
 from db import get_teams_with_scores, get_teams, get_people, get_recent_beers, update_people
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -43,8 +44,17 @@ def user_table():
     teams = get_teams()
     return render_template('people_table.html', people=people, all_teams=teams)
 
+
 def run_flask_server():
-    app.run(debug=True, use_reloader=False)
+    # Disable Werkzeug logs (request logs)
+    log = logging.getLogger('werkzeug')
+    log.setLevel(logging.ERROR)
+
+    # Optionally disable Flask logs
+    app.logger.disabled = True
+    logging.getLogger('flask.app').disabled = True
+
+    app.run(debug=False, use_reloader=False)
 
 @app.route('/change-team', methods=['POST'])
 def change_team():

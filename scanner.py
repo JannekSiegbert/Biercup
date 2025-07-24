@@ -31,6 +31,19 @@ def read_serial(port, baud_rate):
     except:
         print(f"{port} konnte nicht geöffnet werden")
        
+
+def simulate_serial_input():
+    print("Simulated serial input mode. Type a name and press Enter to simulate a scan.")
+    while True:
+        try:
+            barcode = input("Scan (or type name): ").strip()
+            if not barcode:
+                continue
+            add_beer_for_person(barcode)
+        except KeyboardInterrupt:
+            print("\nExiting simulated serial input.")
+            break
+
 def search_for_ports():
     list_of_ports = list(serial.tools.list_ports.comports())
     return list_of_ports
